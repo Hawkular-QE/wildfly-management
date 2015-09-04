@@ -1,9 +1,12 @@
 package org.hawkular.qe.wildfly.management;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -12,9 +15,13 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.sasl.RealmCallback;
 
+import org.hawkular.qe.wildfly.management.deployment.DeploymentExecutionStatus;
+import org.hawkular.qe.wildfly.management.deployment.Utils.Action;
+import org.hawkular.qe.wildfly.management.deployment.StandaloneDeploymentAction;
 import org.hawkular.qe.wildfly.management.model.Deployment;
 import org.hawkular.qe.wildfly.management.model.ServerInfo;
 import org.jboss.as.controller.client.ModelControllerClient;
+import org.jboss.as.controller.client.helpers.domain.DomainClient;
 import org.jboss.as.controller.descriptions.ModelDescriptionConstants;
 import org.jboss.dmr.ModelNode;
 import org.slf4j.Logger;
@@ -40,9 +47,8 @@ public class Client {
     public void close() {
         try {
             modelControllerClient.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (IOException ex) {
+            _logger.error("Unable to close 'ModelControllerClient' client, ", ex);
         }
     }
 
@@ -102,6 +108,10 @@ public class Client {
         return modelControllerClient;
     }
 
+    public DomainClient getDomainClient() {
+        return DomainClient.Factory.create(modelControllerClient);
+    }
+
     //Operations
 
     //Get Server Information
@@ -117,6 +127,58 @@ public class Client {
     //Get Deployment
     public Deployment getDeployment(String name) {
         return new Deployment(modelControllerClient, name);
+    }
+
+    public DeploymentExecutionStatus deploy(File file) throws IOException, InterruptedException, ExecutionException {
+        StandaloneDeploymentAction deploymentAction = new StandaloneDeploymentAction(modelControllerClient,
+                Action.DEPLOY, file);
+        return deploymentAction.execute();
+    }
+
+    public DeploymentExecutionStatus deploy(URL url) throws IOException, InterruptedException, ExecutionException {
+        StandaloneDeploymentAction deploymentAction = new StandaloneDeploymentAction(modelControllerClient,
+                Action.DEPLOY, url);
+        return deploymentAction.execute();
+    }
+
+    public DeploymentExecutionStatus add(File file) throws IOException, InterruptedException, ExecutionException {
+        StandaloneDeploymentAction deploymentAction = new StandaloneDeploymentAction(modelControllerClient,
+                Action.ADD, file);
+        return deploymentAction.execute();
+    }
+
+    public DeploymentExecutionStatus add(URL url) throws IOException, InterruptedException, ExecutionException {
+        StandaloneDeploymentAction deploymentAction = new StandaloneDeploymentAction(modelControllerClient,
+                Action.ADD, url);
+        return deploymentAction.execute();
+    }
+
+    public DeploymentExecutionStatus undeploy(String archiveName) throws IOException, InterruptedException,
+            ExecutionException {
+        StandaloneDeploymentAction deploymentAction = new StandaloneDeploymentAction(modelControllerClient,
+                Action.UNDEPLOY, archiveName);
+        return deploymentAction.execute();
+    }
+
+    public DeploymentExecutionStatus disable(String archiveName) throws IOException, InterruptedException,
+            ExecutionException {
+        StandaloneDeploymentAction deploymentAction = new StandaloneDeploymentAction(modelControllerClient,
+                Action.DISABLE, archiveName);
+        return deploymentAction.execute();
+    }
+
+    public DeploymentExecutionStatus enable(String archiveName) throws IOException, InterruptedException,
+            ExecutionException {
+        StandaloneDeploymentAction deploymentAction = new StandaloneDeploymentAction(modelControllerClient,
+                Action.ENABLE, archiveName);
+        return deploymentAction.execute();
+    }
+
+    public DeploymentExecutionStatus remove(String archiveName) throws IOException, InterruptedException,
+            ExecutionException {
+        StandaloneDeploymentAction deploymentAction = new StandaloneDeploymentAction(modelControllerClient,
+                Action.REMOVE, archiveName);
+        return deploymentAction.execute();
     }
 
 }
