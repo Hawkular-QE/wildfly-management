@@ -1,0 +1,22 @@
+= wildfly-management
+:source-language: java
+
+API's to manage wildfly server(Stanadlone [or] Domain mode)
+
+== Quickstart
+To build project,
+
+  mvn clean install
+
+To create Eclipse project
+
+  mvn eclipse:eclipse
+
+=== Example,
+```java
+StandaloneMgmtClient standaloneMgmtClient = new StandaloneMgmtClient("localhost", 9990, "jboss", "Jboss@123");
+System.out.println("Version Information: " + standaloneMgmtClient.getServerInfo());
+standaloneMgmtClient.enable("example.war");
+standaloneMgmtClient.deploy(new File("/tmp/myApp.war"));
+```
+
