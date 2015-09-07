@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.apache.commons.io.FilenameUtils;
 import org.hawkular.qe.wildfly.management.deployment.Utils.Action;
 import org.hawkular.qe.wildfly.management.deployment.Utils.Status;
 import org.jboss.as.controller.client.ModelControllerClient;
@@ -16,76 +15,59 @@ import org.jboss.as.controller.client.helpers.standalone.DeploymentPlanBuilder;
 import org.jboss.as.controller.client.helpers.standalone.ServerDeploymentActionResult;
 import org.jboss.as.controller.client.helpers.standalone.ServerDeploymentManager;
 import org.jboss.as.controller.client.helpers.standalone.ServerDeploymentPlanResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author jkandasa@redhat.com (Jeeva Kandasamy)
  */
-public class StandaloneDeploymentAction {
-    private static final Logger _logger = LoggerFactory.getLogger(StandaloneDeploymentAction.class.getName());
-
-    private Action action;
-    private ModelControllerClient modelControllerClient = null;
-    private File file;
-    private String archiveName;
-    private URL url;
+public class StandaloneDeploymentAction extends DeploymentActionCommon {
 
     public StandaloneDeploymentAction(ModelControllerClient modelControllerClient, Action action, File file) {
-        this.modelControllerClient = modelControllerClient;
-        this.action = action;
-        this.file = file;
-        this.archiveName = file.getName();
+        super(modelControllerClient, action, file);
     }
 
     public StandaloneDeploymentAction(ModelControllerClient modelControllerClient, Action action, URL url) {
-        this.modelControllerClient = modelControllerClient;
-        this.action = action;
-        this.url = url;
-        this.archiveName = FilenameUtils.getName(url.toString());
+        super(modelControllerClient, action, url);
     }
 
     public StandaloneDeploymentAction(ModelControllerClient modelControllerClient, Action action, String archiveName) {
-        this.modelControllerClient = modelControllerClient;
-        this.action = action;
-        this.archiveName = archiveName;
+        super(modelControllerClient, action, archiveName);
     }
 
     public DeploymentExecutionStatus execute() throws IOException, InterruptedException, ExecutionException {
-        ServerDeploymentManager manager = ServerDeploymentManager.Factory.create(modelControllerClient);
+        ServerDeploymentManager manager = ServerDeploymentManager.Factory.create(getModelControllerClient());
         DeploymentPlanBuilder builder = manager.newDeploymentPlan();
         DeploymentPlan plan = null;
-        _logger.debug("Archive Name:{}, Requested Action:{}", this.archiveName, action.toString());
+        _logger.debug("Archive Name:{}, Requested Action:{}", getArchiveName(), getAction().toString());
 
-        switch (this.action) {
+        switch (getAction()) {
             case DEPLOY:
-                if (this.url != null) {
-                    plan = builder.add(this.url).deploy(this.archiveName).build();
+                if (getUrl() != null) {
+                    plan = builder.add(getUrl()).deploy(getArchiveName()).build();
                 } else {
-                    plan = builder.add(this.file).deploy(this.archiveName).build();
+                    plan = builder.add(getFile()).deploy(getArchiveName()).build();
                 }
                 break;
             case DISABLE:
             case UNDEPLOY:
-                plan = builder.undeploy(this.archiveName).build();
+                plan = builder.undeploy(getArchiveName()).build();
                 break;
             case ENABLE:
-                plan = builder.deploy(this.archiveName).build();
+                plan = builder.deploy(getArchiveName()).build();
                 break;
             case REDEPLOY:
-                if (this.url != null) {
-                    plan = builder.add(this.url).redeploy(this.archiveName).build();
+                if (getUrl() != null) {
+                    plan = builder.add(getUrl()).redeploy(getArchiveName()).build();
                 } else {
-                    plan = builder.add(this.file).redeploy(this.archiveName).build();
+                    plan = builder.add(getFile()).redeploy(getArchiveName()).build();
                 }
                 break;
             case REMOVE:
-                plan = builder.remove(this.archiveName).build();
+                plan = builder.remove(getArchiveName()).build();
             case ADD:
-                if (this.url != null) {
-                    plan = builder.add(this.url).build();
+                if (getUrl() != null) {
+                    plan = builder.add(getUrl()).build();
                 } else {
-                    plan = builder.add(this.file).build();
+                    plan = builder.add(getFile()).build();
                 }
                 break;
             default:

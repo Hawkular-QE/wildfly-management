@@ -1,6 +1,6 @@
 package org.hawkular.qe.wildfly.management.model;
 
-import org.hawkular.qe.wildfly.management.Client;
+import org.hawkular.qe.wildfly.management.client.StandaloneMgmtClient;
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.as.controller.descriptions.ModelDescriptionConstants;
 import org.jboss.dmr.ModelNode;
@@ -17,7 +17,7 @@ public class ModelUtils {
         ModelNode op = new ModelNode();
         op.get(ModelDescriptionConstants.OP).set(ModelDescriptionConstants.READ_ATTRIBUTE_OPERATION);
         op.get(ModelDescriptionConstants.NAME).set(key);
-        ModelNode result = Client.execute(client, op);
+        ModelNode result = StandaloneMgmtClient.execute(client, op);
         if (result != null) {
             return result.get(ModelDescriptionConstants.RESULT).asString();
         } else {

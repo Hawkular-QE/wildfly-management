@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hawkular.qe.wildfly.management.Client;
+import org.hawkular.qe.wildfly.management.client.StandaloneMgmtClient;
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.as.controller.descriptions.ModelDescriptionConstants;
 import org.jboss.dmr.ModelNode;
@@ -35,7 +35,7 @@ public class Deployment {
         address.add(ModelDescriptionConstants.DEPLOYMENT, name);
         ModelNode result = null;
         try{
-            result = Client.execute(modelControllerClient, op);
+            result = StandaloneMgmtClient.execute(modelControllerClient, op);
         }catch(IllegalStateException ex){
             throw ex;
         }
@@ -56,7 +56,7 @@ public class Deployment {
         ModelNode op = new ModelNode();
         op.get(ModelDescriptionConstants.OP).set(ModelDescriptionConstants.READ_CHILDREN_NAMES_OPERATION);
         op.get(ModelDescriptionConstants.CHILD_TYPE).set(ModelDescriptionConstants.DEPLOYMENT);
-        ModelNode result = Client.execute(modelControllerClient, op);
+        ModelNode result = StandaloneMgmtClient.execute(modelControllerClient, op);
         final List<ModelNode> deploymentsModelNode = (result.hasDefined(ModelDescriptionConstants.RESULT) ? result
                 .get(ModelDescriptionConstants.RESULT).asList() : Collections.<ModelNode> emptyList());
         List<Deployment> deployments = new ArrayList<Deployment>();

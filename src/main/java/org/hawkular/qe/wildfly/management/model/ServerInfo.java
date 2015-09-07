@@ -1,7 +1,7 @@
 package org.hawkular.qe.wildfly.management.model;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hawkular.qe.wildfly.management.Client;
+import org.hawkular.qe.wildfly.management.client.StandaloneMgmtClient;
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.as.controller.descriptions.ModelDescriptionConstants;
 import org.jboss.dmr.ModelNode;
@@ -34,7 +34,7 @@ public class ServerInfo {
     public ServerInfo(ModelControllerClient modelControllerClient) {
         ModelNode op = new ModelNode();
         op.get(ModelDescriptionConstants.OP).set(ModelDescriptionConstants.READ_RESOURCE_OPERATION);
-        ModelNode result = Client.execute(modelControllerClient, op);
+        ModelNode result = StandaloneMgmtClient.execute(modelControllerClient, op);
         result = result.get(ModelDescriptionConstants.RESULT);
 
         this.setManagementMajorVersion(ModelUtils.getValue(result, ModelDescriptionConstants.MANAGEMENT_MAJOR_VERSION));
