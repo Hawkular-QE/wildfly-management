@@ -63,6 +63,7 @@ public class StandaloneDeploymentAction extends DeploymentActionCommon {
                 break;
             case REMOVE:
                 plan = builder.remove(getArchiveName()).build();
+                break;
             case ADD:
                 if (getUrl() != null) {
                     plan = builder.add(getUrl()).build();
