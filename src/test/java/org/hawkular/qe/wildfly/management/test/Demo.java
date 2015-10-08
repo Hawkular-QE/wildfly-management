@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Red Hat, Inc. and/or its affiliates
+ * and other contributors as indicated by the @author tags.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.hawkular.qe.wildfly.management.test;
 
 import java.io.File;
@@ -9,9 +25,6 @@ import org.hawkular.qe.wildfly.management.deployment.DeploymentExecutionStatus;
 import org.hawkular.qe.wildfly.management.model.Deployment;
 import org.hawkular.qe.wildfly.management.model.ServerInfo;
 
-/**
- * @author jkandasa@redhat.com (Jeeva Kandasamy)
- */
 public class Demo {
 
     public static void main(String[] args) throws UnknownHostException {
@@ -23,14 +36,14 @@ public class Demo {
         standaloneMgmtClient = new StandaloneMgmtClient(host, port, userid, password);
 
         //Display Server information
-        //displayServerDetails(standaloneMgmtClient.getServerInfo());
+        displayServerDetails(standaloneMgmtClient.getServerInfo());
 
         //Display Available deployments
-        // displayDeploymentsName(standaloneMgmtClient.getDeployments());
+        displayDeploymentsName(standaloneMgmtClient.getDeployments());
 
         //Display example.war deployment details
         displayDeploymentDetails(standaloneMgmtClient, "example.war");
-        /*
+
         //Deploy example.war application
         deployApplication(standaloneMgmtClient);
 
@@ -54,7 +67,7 @@ public class Demo {
 
         //Display example.war deployment details
         displayDeploymentDetails(standaloneMgmtClient, "example.war");
-        */
+
         standaloneMgmtClient.close();
     }
 
