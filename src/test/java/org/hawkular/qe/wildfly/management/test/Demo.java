@@ -28,10 +28,10 @@ import org.hawkular.qe.wildfly.management.model.ServerInfo;
 public class Demo {
 
     public static void main(String[] args) throws UnknownHostException {
-        String host = "haw-src-auto.bc.jonqe.lab.eng.bos.redhat.com";
+        String host = "localhost";
         int port = 9990;
-        String userid = "jboss";
-        String password = "Jboss@123";
+        String userid = "admin";
+        String password = "admin";
         StandaloneMgmtClient standaloneMgmtClient = null;
         standaloneMgmtClient = new StandaloneMgmtClient(host, port, userid, password);
 
