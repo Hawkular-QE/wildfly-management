@@ -53,4 +53,35 @@ public class ModelUtils {
         return result.get(key).asLong();
     }
 
+    public static Integer getIntegerValue(ModelNode result, String key) {
+        return result.get(key).asInt();
+    }
+
+    public static String getValue(ModelNode result, String... keys) {
+        return getValue(getSubResult(result, keys.length - 1, keys), keys[keys.length - 1]);
+    }
+
+    public static Boolean getBooleanValue(ModelNode result, String... keys) {
+        return getBooleanValue(getSubResult(result, keys.length - 1, keys), keys[keys.length - 1]);
+    }
+
+    public static Long getLongValue(ModelNode result, String... keys) {
+        return getLongValue(getSubResult(result, keys.length - 1, keys), keys[keys.length - 1]);
+    }
+
+    public static Integer getIntegerValue(ModelNode result, String... keys) {
+        return getIntegerValue(getSubResult(result, keys.length - 1, keys), keys[keys.length - 1]);
+    }
+
+    public static ModelNode getSubResult(ModelNode result, int maxDepth, String... keys) {
+        if (maxDepth > keys.length) {
+            throw new RuntimeException("maxDepth size should be <= keys length");
+        }
+        ModelNode subResult = result;
+        for (int keyIndex = 0; keyIndex < maxDepth; keyIndex++) {
+            subResult = result.get(keys[keyIndex]);
+        }
+        return subResult;
+    }
+
 }

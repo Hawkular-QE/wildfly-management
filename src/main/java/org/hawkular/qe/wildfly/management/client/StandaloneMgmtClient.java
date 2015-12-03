@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 import org.hawkular.qe.wildfly.management.deployment.DeploymentExecutionStatus;
 import org.hawkular.qe.wildfly.management.deployment.StandaloneDeploymentAction;
 import org.hawkular.qe.wildfly.management.deployment.Utils.Action;
+import org.hawkular.qe.wildfly.management.model.Datasource;
 import org.hawkular.qe.wildfly.management.model.Deployment;
 
 /**
@@ -51,6 +52,16 @@ public class StandaloneMgmtClient extends ClientCommon {
     //Get Deployment
     public Deployment getDeployment(String name) {
         return new Deployment(getModelControllerClient(), name);
+    }
+
+    //Get Datasource List
+    public List<Datasource> getDatasources() {
+        return new Datasource().getDatasources(getModelControllerClient());
+    }
+
+    //Get Datasource details
+    public Datasource getDatasource(String name) {
+        return new Datasource(getModelControllerClient(), name);
     }
 
     public DeploymentExecutionStatus deploy(File file) throws IOException, InterruptedException, ExecutionException {

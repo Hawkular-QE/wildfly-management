@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.hawkular.qe.wildfly.management.client.StandaloneMgmtClient;
 import org.hawkular.qe.wildfly.management.deployment.DeploymentExecutionStatus;
+import org.hawkular.qe.wildfly.management.model.Datasource;
 import org.hawkular.qe.wildfly.management.model.Deployment;
 import org.hawkular.qe.wildfly.management.model.ServerInfo;
 
@@ -34,6 +35,15 @@ public class Demo {
         String password = "admin";
         StandaloneMgmtClient standaloneMgmtClient = null;
         standaloneMgmtClient = new StandaloneMgmtClient(host, port, userid, password);
+
+        //Display data-sources
+        List<Datasource> datasources = standaloneMgmtClient.getDatasources();
+        displayDataSources(datasources);
+
+        //Display Data Source
+        for (Datasource datasource : datasources) {
+            displayDataSource(standaloneMgmtClient.getDatasource(datasource.getName()));
+        }
 
         //Display Server information
         displayServerDetails(standaloneMgmtClient.getServerInfo());
@@ -179,6 +189,23 @@ public class Demo {
         if (status != null) {
             System.out.println("Remove status: " + status);
         }
+        System.out.println("=======================================================");
+    }
+
+    public static void displayDataSources(List<Datasource> datasources) {
+        System.out.println("=======================================================");
+        System.out.println("Number of Datasources: " + datasources.size());
+        int counter = 1;
+        for (Datasource datasource : datasources) {
+            System.out.println(counter + "  : " + datasource.getName());
+            counter++;
+        }
+        System.out.println("=======================================================");
+    }
+
+    public static void displayDataSource(Datasource datasource) {
+        System.out.println("=======================================================");
+        System.out.println(datasource.toString());
         System.out.println("=======================================================");
     }
 }
