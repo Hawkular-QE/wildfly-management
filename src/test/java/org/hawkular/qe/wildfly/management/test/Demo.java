@@ -22,9 +22,9 @@ import java.util.List;
 
 import org.hawkular.qe.wildfly.management.client.StandaloneMgmtClient;
 import org.hawkular.qe.wildfly.management.deployment.DeploymentExecutionStatus;
-import org.hawkular.qe.wildfly.management.model.Datasource;
 import org.hawkular.qe.wildfly.management.model.Deployment;
 import org.hawkular.qe.wildfly.management.model.ServerInfo;
+import org.hawkular.qe.wildfly.management.subsystem.Datasources;
 
 public class Demo {
 
@@ -36,13 +36,34 @@ public class Demo {
         StandaloneMgmtClient standaloneMgmtClient = null;
         standaloneMgmtClient = new StandaloneMgmtClient(host, port, userid, password);
 
+        //Get Datasources
+        Datasources datasources = standaloneMgmtClient.getDatasources();
+
         //Display data-sources
-        List<Datasource> datasources = standaloneMgmtClient.getDatasources();
-        displayDataSources(datasources);
+        List<String> dataSourceList = datasources.getDataSourceList();
+        displayStringList("Number of DataSource", dataSourceList);
 
         //Display Data Source
-        for (Datasource datasource : datasources) {
-            displayDataSource(standaloneMgmtClient.getDatasource(datasource.getName()));
+        for (String dataSourceName : dataSourceList) {
+            displayString(datasources.getDataSource(dataSourceName).toString());
+        }
+
+        //Display xa-data-sources
+        List<String> xaDataSourceList = datasources.getXaDataSourceList();
+        displayStringList("Number of XA DataSource", xaDataSourceList);
+
+        //Display XA Data Source
+        for (String name : xaDataSourceList) {
+            displayString(datasources.getXaDataSource(name).toString());
+        }
+
+        //JDBC Drivers
+        List<String> jdbcDriverList = datasources.getJdbcDriverList();
+        displayStringList("JDBC Drivers", jdbcDriverList);
+
+        //Display Jdbc Drivers
+        for (String name : jdbcDriverList) {
+            displayString(datasources.getJdbcDriver(name).toString());
         }
 
         //Display Server information
@@ -192,20 +213,20 @@ public class Demo {
         System.out.println("=======================================================");
     }
 
-    public static void displayDataSources(List<Datasource> datasources) {
+    public static void displayStringList(String listName, List<String> stringList) {
         System.out.println("=======================================================");
-        System.out.println("Number of Datasources: " + datasources.size());
+        System.out.println(listName + ": " + stringList.size());
         int counter = 1;
-        for (Datasource datasource : datasources) {
-            System.out.println(counter + "  : " + datasource.getName());
+        for (String string : stringList) {
+            System.out.println(counter + "  : " + string);
             counter++;
         }
         System.out.println("=======================================================");
     }
 
-    public static void displayDataSource(Datasource datasource) {
+    public static void displayString(String string) {
         System.out.println("=======================================================");
-        System.out.println(datasource.toString());
+        System.out.println(string);
         System.out.println("=======================================================");
     }
 }

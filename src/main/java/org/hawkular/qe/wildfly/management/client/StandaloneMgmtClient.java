@@ -26,8 +26,8 @@ import java.util.concurrent.ExecutionException;
 import org.hawkular.qe.wildfly.management.deployment.DeploymentExecutionStatus;
 import org.hawkular.qe.wildfly.management.deployment.StandaloneDeploymentAction;
 import org.hawkular.qe.wildfly.management.deployment.Utils.Action;
-import org.hawkular.qe.wildfly.management.model.Datasource;
 import org.hawkular.qe.wildfly.management.model.Deployment;
+import org.hawkular.qe.wildfly.management.subsystem.Datasources;
 
 /**
  * @author jkandasa@redhat.com (Jeeva Kandasamy)
@@ -54,14 +54,9 @@ public class StandaloneMgmtClient extends ClientCommon {
         return new Deployment(getModelControllerClient(), name);
     }
 
-    //Get Datasource List
-    public List<Datasource> getDatasources() {
-        return new Datasource().getDatasources(getModelControllerClient());
-    }
-
-    //Get Datasource details
-    public Datasource getDatasource(String name) {
-        return new Datasource(getModelControllerClient(), name);
+    //Get Datasources object
+    public Datasources getDatasources() {
+        return new Datasources(getModelControllerClient());
     }
 
     public DeploymentExecutionStatus deploy(File file) throws IOException, InterruptedException, ExecutionException {
