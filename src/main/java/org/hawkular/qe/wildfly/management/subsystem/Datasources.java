@@ -31,6 +31,7 @@ import org.jboss.dmr.ModelNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -147,4 +148,19 @@ public class Datasources {
         return null;
     }
 
+    public boolean addDataSource(DataSource dataSource) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            ModelNode op = ModelNode.fromJSONString(mapper.writeValueAsString(dataSource));
+            op.get(ModelDescriptionConstants.OP).set(ModelDescriptionConstants.ADD);
+            ModelNode address = op.get(ModelDescriptionConstants.ADDRESS);
+            address.add(ModelDescriptionConstants.SUBSYSTEM, Datasources.DATASOURCES);
+            address.add(DATA_SOURCE, dataSource.getName());
+            ModelNode result = StandaloneMgmtClient.execute(modelControllerClient, op);
+            return result.get(ModelDescriptionConstants.OUTCOME).asString().equalsIgnoreCase("success");
+        } catch (JsonProcessingException ex) {
+            _logger.error("Error, ", ex);
+        }
+        return false;
+    }
 }

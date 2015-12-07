@@ -33,13 +33,22 @@ import org.hawkular.qe.wildfly.management.subsystem.Datasources;
  * @author jkandasa@redhat.com (Jeeva Kandasamy)
  */
 public class StandaloneMgmtClient extends ClientCommon {
+
+    private Datasources datasources;
+
     public StandaloneMgmtClient(String host, int port, String userid, String password) throws UnknownHostException {
         super(host, port, userid, password, MANAGEMENT_REALM);
+        this.createObjects();
     }
 
     public StandaloneMgmtClient(String host, int port, String userid, String password, String Realm)
             throws UnknownHostException {
         super(host, port, userid, password, Realm);
+        this.createObjects();
+    }
+
+    private void createObjects() {
+        this.datasources = new Datasources(getModelControllerClient());
     }
 
     //Operations
@@ -56,7 +65,7 @@ public class StandaloneMgmtClient extends ClientCommon {
 
     //Get Datasources object
     public Datasources getDatasources() {
-        return new Datasources(getModelControllerClient());
+        return this.datasources;
     }
 
     public DeploymentExecutionStatus deploy(File file) throws IOException, InterruptedException, ExecutionException {

@@ -17,9 +17,12 @@
 package org.hawkular.qe.wildfly.management.model.subsystem.datasources;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hawkular.qe.wildfly.management.json.serialzier.ConnectionUrlSerialzier;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author jkandasa@redhat.com (Jeeva Kandasamy)
@@ -73,6 +76,7 @@ public class DataSource {
     private String connectionProperties;
 
     @JsonProperty("connection-url")
+    @JsonSerialize(using = ConnectionUrlSerialzier.class)
     private ConnectionUrl connectionUrl;
 
     @JsonProperty("datasource-class")
@@ -447,490 +451,241 @@ public class DataSource {
         return statistics;
     }
 
-}
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-class ConnectionUrl {
-    @JsonProperty("EXPRESSION_VALUE")
-    private String expressionValue;
-
-    public String getExpressionValue() {
-        return expressionValue;
-    }
-
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-}
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-class Statistics {
-    @JsonProperty("pool")
-    private Pool pool;
-
-    @JsonProperty("jdbc")
-    private Jdbc jdbc;
-
-    public Jdbc getJdbc() {
-        return jdbc;
-    }
-
-    public Pool getPool() {
-        return pool;
-    }
-
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-}
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-class Pool {
-
-    @JsonProperty("ActiveCount")
-    private Integer activeCount;
-
-    @JsonProperty("AvailableCount")
-    private Integer availableCount;
-
-    @JsonProperty("AverageBlockingTime")
-    private Long averageBlockingTime;
-
-    @JsonProperty("AverageCreationTime")
-    private Long averageCreationTime;
-
-    @JsonProperty("AverageGetTime")
-    private Long averageGetTime;
-
-    @JsonProperty("AveragePoolTime")
-    private Long averagePoolTime;
-
-    @JsonProperty("AverageUsageTime")
-    private Long averageUsageTime;
-
-    @JsonProperty("BlockingFailureCount")
-    private Integer blockingFailureCount;
-
-    @JsonProperty("CreatedCount")
-    private Integer createdCount;
-
-    @JsonProperty("DestroyedCount")
-    private Integer destroyedCount;
-
-    @JsonProperty("IdleCount")
-    private Integer idleCount;
-
-    @JsonProperty("InUseCount")
-    private Integer inUseCount;
-
-    @JsonProperty("MaxCreationTime")
-    private Long maxCreationTime;
-
-    @JsonProperty("MaxGetTime")
-    private Long maxGetTime;
-
-    @JsonProperty("MaxPoolTime")
-    private Long maxPoolTime;
-
-    @JsonProperty("MaxUsageTime")
-    private Long maxUsageTime;
-
-    @JsonProperty("MaxUsedCount")
-    private Long maxUsedCount;
-
-    @JsonProperty("MaxWaitCount")
-    private Long maxWaitCount;
-
-    @JsonProperty("MaxWaitTime")
-    private Long maxWaitTime;
-
-    @JsonProperty("TimedOut")
-    private Integer timedOut;
-
-    @JsonProperty("TotalBlockingTime")
-    private Long totalBlockingTime;
-
-    @JsonProperty("TotalCreationTime")
-    private Long totalCreationTime;
-
-    @JsonProperty("TotalGetTime")
-    private Long totalGetTime;
-
-    @JsonProperty("TotalPoolTime")
-    private Long totalPoolTime;
-
-    @JsonProperty("TotalUsageTime")
-    private Long totalUsageTime;
-
-    @JsonProperty("WaitCount")
-    private Integer waitCount;
-
-    @JsonProperty("XACommitAverageTime")
-    private Long xACommitAverageTime;
-
-    @JsonProperty("XACommitCount")
-    private Long xACommitCount;
-
-    @JsonProperty("XACommitMaxTime")
-    private Long xACommitMaxTime;
-
-    @JsonProperty("XACommitTotalTime")
-    private Long xACommitTotalTime;
-
-    @JsonProperty("XAEndAverageTime")
-    private Long xAEndAverageTime;
-
-    @JsonProperty("XAEndCount")
-    private Long xAEndCount;
-
-    @JsonProperty("XAEndMaxTime")
-    private Long xAEndMaxTime;
-
-    @JsonProperty("XAEndTotalTime")
-    private Long xAEndTotalTime;
-
-    @JsonProperty("XAForgetAverageTime")
-    private Long xAForgetAverageTime;
-
-    @JsonProperty("XAForgetCount")
-    private Long xAForgetCount;
-
-    @JsonProperty("XAForgetMaxTime")
-    private Long xAForgetMaxTime;
-
-    @JsonProperty("XAForgetTotalTime")
-    private Long xAForgetTotalTime;
-
-    @JsonProperty("XAPrepareAverageTime")
-    private Long xAPrepareAverageTime;
-
-    @JsonProperty("XAPrepareCount")
-    private Long xAPrepareCount;
-
-    @JsonProperty("XAPrepareMaxTime")
-    private Long xAPrepareMaxTime;
-
-    @JsonProperty("XAPrepareTotalTime")
-    private Long xAPrepareTotalTime;
-
-    @JsonProperty("XARecoverAverageTime")
-    private Long xARecoverAverageTime;
-
-    @JsonProperty("XARecoverCount")
-    private Long xARecoverCount;
-
-    @JsonProperty("XARecoverMaxTime")
-    private Long xARecoverMaxTime;
-
-    @JsonProperty("XARecoverTotalTime")
-    private Long xARecoverTotalTime;
-
-    @JsonProperty("XARollbackAverageTime")
-    private Long xARollbackAverageTime;
-
-    @JsonProperty("XARollbackCount")
-    private Long xARollbackCount;
-
-    @JsonProperty("XARollbackMaxTime")
-    private Long xARollbackMaxTime;
-
-    @JsonProperty("XARollbackTotalTime")
-    private Long xARollbackTotalTime;
-
-    @JsonProperty("XAStartAverageTime")
-    private Long xAStartAverageTime;
-
-    @JsonProperty("XAStartCount")
-    private Long xAStartCount;
-
-    @JsonProperty("XAStartMaxTime")
-    private Long xAStartMaxTime;
-
-    @JsonProperty("XAStartTotalTime")
-    private Long xAStartTotalTime;
-
-    @JsonProperty("statistics-enabled")
-    private Boolean statisticsEnabled;
-
-    public Integer getActiveCount() {
-        return activeCount;
-    }
-
-    public Integer getAvailableCount() {
-        return availableCount;
-    }
-
-    public Long getAverageBlockingTime() {
-        return averageBlockingTime;
-    }
-
-    public Long getAverageCreationTime() {
-        return averageCreationTime;
-    }
-
-    public Long getAverageGetTime() {
-        return averageGetTime;
-    }
-
-    public Long getAveragePoolTime() {
-        return averagePoolTime;
+    public void setAllocationRetry(Integer allocationRetry) {
+        this.allocationRetry = allocationRetry;
     }
 
-    public Long getAverageUsageTime() {
-        return averageUsageTime;
+    public void setAllocationRetryWaitMillis(Long allocationRetryWaitMillis) {
+        this.allocationRetryWaitMillis = allocationRetryWaitMillis;
     }
 
-    public Integer getBlockingFailureCount() {
-        return blockingFailureCount;
+    public void setAllowMultipleUsers(Boolean allowMultipleUsers) {
+        this.allowMultipleUsers = allowMultipleUsers;
     }
 
-    public Integer getCreatedCount() {
-        return createdCount;
+    public void setBackgroundValidation(Boolean backgroundValidation) {
+        this.backgroundValidation = backgroundValidation;
     }
 
-    public Integer getDestroyedCount() {
-        return destroyedCount;
+    public void setBackgroundValidationMillis(Long backgroundValidationMillis) {
+        this.backgroundValidationMillis = backgroundValidationMillis;
     }
 
-    public Integer getIdleCount() {
-        return idleCount;
+    public void setBlockingTimeoutWaitMillis(Long blockingTimeoutWaitMillis) {
+        this.blockingTimeoutWaitMillis = blockingTimeoutWaitMillis;
     }
 
-    public Integer getInUseCount() {
-        return inUseCount;
+    public void setCapacityDecrementerClass(String capacityDecrementerClass) {
+        this.capacityDecrementerClass = capacityDecrementerClass;
     }
 
-    public Long getMaxCreationTime() {
-        return maxCreationTime;
+    public void setCapacityDecrementerProperties(String capacityDecrementerProperties) {
+        this.capacityDecrementerProperties = capacityDecrementerProperties;
     }
 
-    public Long getMaxGetTime() {
-        return maxGetTime;
+    public void setCapacityIncrementerClass(String capacityIncrementerClass) {
+        this.capacityIncrementerClass = capacityIncrementerClass;
     }
 
-    public Long getMaxPoolTime() {
-        return maxPoolTime;
+    public void setCapacityIncrementerProperties(String capacityIncrementerProperties) {
+        this.capacityIncrementerProperties = capacityIncrementerProperties;
     }
 
-    public Long getMaxUsageTime() {
-        return maxUsageTime;
+    public void setCheckValidConnectionSql(String checkValidConnectionSql) {
+        this.checkValidConnectionSql = checkValidConnectionSql;
     }
 
-    public Long getMaxUsedCount() {
-        return maxUsedCount;
+    public void setConnectable(Boolean connectable) {
+        this.connectable = connectable;
     }
 
-    public Long getMaxWaitCount() {
-        return maxWaitCount;
+    public void setConnectionListenerClass(String connectionListenerClass) {
+        this.connectionListenerClass = connectionListenerClass;
     }
 
-    public Long getMaxWaitTime() {
-        return maxWaitTime;
+    public void setConnectionListenerProperty(String connectionListenerProperty) {
+        this.connectionListenerProperty = connectionListenerProperty;
     }
 
-    public Integer getTimedOut() {
-        return timedOut;
+    public void setConnectionProperties(String connectionProperties) {
+        this.connectionProperties = connectionProperties;
     }
 
-    public Long getTotalBlockingTime() {
-        return totalBlockingTime;
+    @JsonSetter
+    public void setConnectionUrl(ConnectionUrl connectionUrl) {
+        this.connectionUrl = connectionUrl;
     }
 
-    public Long getTotalCreationTime() {
-        return totalCreationTime;
+    public void setConnectionUrl(String connectionUrl) {
+        this.connectionUrl = new ConnectionUrl(connectionUrl);
     }
 
-    public Long getTotalGetTime() {
-        return totalGetTime;
+    public void setDatasourceClass(String datasourceClass) {
+        this.datasourceClass = datasourceClass;
     }
 
-    public Long getTotalPoolTime() {
-        return totalPoolTime;
+    public void setDriverClass(String driverClass) {
+        this.driverClass = driverClass;
     }
 
-    public Long getTotalUsageTime() {
-        return totalUsageTime;
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
-    public Integer getWaitCount() {
-        return waitCount;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public Long getxACommitAverageTime() {
-        return xACommitAverageTime;
+    public void setExceptionSorterClassName(String exceptionSorterClassName) {
+        this.exceptionSorterClassName = exceptionSorterClassName;
     }
 
-    public Long getxACommitCount() {
-        return xACommitCount;
+    public void setExceptionSorterProperties(String exceptionSorterProperties) {
+        this.exceptionSorterProperties = exceptionSorterProperties;
     }
 
-    public Long getxACommitMaxTime() {
-        return xACommitMaxTime;
+    public void setFlushStrategy(String flushStrategy) {
+        this.flushStrategy = flushStrategy;
     }
 
-    public Long getxACommitTotalTime() {
-        return xACommitTotalTime;
+    public void setIdleTimeoutMinutes(Long idleTimeoutMinutes) {
+        this.idleTimeoutMinutes = idleTimeoutMinutes;
     }
 
-    public Long getxAEndAverageTime() {
-        return xAEndAverageTime;
+    public void setInitialPoolSize(Integer initialPoolSize) {
+        this.initialPoolSize = initialPoolSize;
     }
 
-    public Long getxAEndCount() {
-        return xAEndCount;
+    public void setJndiName(String jndiName) {
+        this.jndiName = jndiName;
     }
 
-    public Long getxAEndMaxTime() {
-        return xAEndMaxTime;
+    public void setJta(Boolean jta) {
+        this.jta = jta;
     }
 
-    public Long getxAEndTotalTime() {
-        return xAEndTotalTime;
+    public void setMaxPoolSize(Integer maxPoolSize) {
+        this.maxPoolSize = maxPoolSize;
     }
 
-    public Long getxAForgetAverageTime() {
-        return xAForgetAverageTime;
+    public void setMinPoolSize(Integer minPoolSize) {
+        this.minPoolSize = minPoolSize;
     }
 
-    public Long getxAForgetCount() {
-        return xAForgetCount;
+    public void setNewConnectionSql(String newConnectionSql) {
+        this.newConnectionSql = newConnectionSql;
     }
 
-    public Long getxAForgetMaxTime() {
-        return xAForgetMaxTime;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Long getxAForgetTotalTime() {
-        return xAForgetTotalTime;
+    public void setPoolPrefill(String poolPrefill) {
+        this.poolPrefill = poolPrefill;
     }
 
-    public Long getxAPrepareAverageTime() {
-        return xAPrepareAverageTime;
+    public void setPoolUseStrictMin(String poolUseStrictMin) {
+        this.poolUseStrictMin = poolUseStrictMin;
     }
 
-    public Long getxAPrepareCount() {
-        return xAPrepareCount;
+    public void setPreparedStatementsCacheSize(String preparedStatementsCacheSize) {
+        this.preparedStatementsCacheSize = preparedStatementsCacheSize;
     }
 
-    public Long getxAPrepareMaxTime() {
-        return xAPrepareMaxTime;
+    public void setQueryTimeout(Long queryTimeout) {
+        this.queryTimeout = queryTimeout;
     }
 
-    public Long getxAPrepareTotalTime() {
-        return xAPrepareTotalTime;
+    public void setReauthPluginClassName(String reauthPluginClassName) {
+        this.reauthPluginClassName = reauthPluginClassName;
     }
 
-    public Long getxARecoverAverageTime() {
-        return xARecoverAverageTime;
+    public void setReauthPluginProperties(String reauthPluginProperties) {
+        this.reauthPluginProperties = reauthPluginProperties;
     }
 
-    public Long getxARecoverCount() {
-        return xARecoverCount;
+    public void setSecurityDomain(String securityDomain) {
+        this.securityDomain = securityDomain;
     }
 
-    public Long getxARecoverMaxTime() {
-        return xARecoverMaxTime;
+    public void setSetTxQueryTimeout(Boolean setTxQueryTimeout) {
+        this.setTxQueryTimeout = setTxQueryTimeout;
     }
 
-    public Long getxARecoverTotalTime() {
-        return xARecoverTotalTime;
+    public void setSharePreparedStatements(Boolean sharePreparedStatements) {
+        this.sharePreparedStatements = sharePreparedStatements;
     }
 
-    public Long getxARollbackAverageTime() {
-        return xARollbackAverageTime;
+    public void setSpy(Boolean spy) {
+        this.spy = spy;
     }
 
-    public Long getxARollbackCount() {
-        return xARollbackCount;
+    public void setStaleConnectionCheckerClassName(String staleConnectionCheckerClassName) {
+        this.staleConnectionCheckerClassName = staleConnectionCheckerClassName;
     }
 
-    public Long getxARollbackMaxTime() {
-        return xARollbackMaxTime;
+    public void setStaleConnectionCheckerProperties(String staleConnectionCheckerProperties) {
+        this.staleConnectionCheckerProperties = staleConnectionCheckerProperties;
     }
 
-    public Long getxARollbackTotalTime() {
-        return xARollbackTotalTime;
+    public void setStatisticsEnabled(String statisticsEnabled) {
+        this.statisticsEnabled = statisticsEnabled;
     }
 
-    public Long getxAStartAverageTime() {
-        return xAStartAverageTime;
+    public void setTrackStatements(String trackStatements) {
+        this.trackStatements = trackStatements;
     }
 
-    public Long getxAStartCount() {
-        return xAStartCount;
+    public void setTracking(Boolean tracking) {
+        this.tracking = tracking;
     }
 
-    public Long getxAStartMaxTime() {
-        return xAStartMaxTime;
+    public void setTransactionIsolation(String transactionIsolation) {
+        this.transactionIsolation = transactionIsolation;
     }
 
-    public Long getxAStartTotalTime() {
-        return xAStartTotalTime;
+    public void setUrlDelimiter(String urlDelimiter) {
+        this.urlDelimiter = urlDelimiter;
     }
 
-    public Boolean getStatisticsEnabled() {
-        return statisticsEnabled;
+    public void setUrlSelectorStrategyClassName(String urlSelectorStrategyClassName) {
+        this.urlSelectorStrategyClassName = urlSelectorStrategyClassName;
     }
 
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    public void setUseCcm(Boolean useCcm) {
+        this.useCcm = useCcm;
     }
-
-}
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-class Jdbc {
-    @JsonProperty("PreparedStatementCacheAccessCount")
-    private Long preparedStatementCacheAccessCount;
-
-    @JsonProperty("PreparedStatementCacheAddCount")
-    private Long preparedStatementCacheAddCount;
-
-    @JsonProperty("PreparedStatementCacheCurrentSize")
-    private Long preparedStatementCacheCurrentSize;
-
-    @JsonProperty("PreparedStatementCacheDeleteCount")
-    private Long preparedStatementCacheDeleteCount;
-
-    @JsonProperty("PreparedStatementCacheHitCount")
-    private Long preparedStatementCacheHitCount;
-
-    @JsonProperty("PreparedStatementCacheMissCount")
-    private Long preparedStatementCacheMissCount;
-
-    @JsonProperty("statistics-enabled")
-    private Boolean statisticsEnabled;
 
-    public Long getPreparedStatementCacheAccessCount() {
-        return preparedStatementCacheAccessCount;
+    public void setUseFastFail(Boolean useFastFail) {
+        this.useFastFail = useFastFail;
     }
 
-    public Long getPreparedStatementCacheAddCount() {
-        return preparedStatementCacheAddCount;
+    public void setUseJavaContext(Boolean useJavaContext) {
+        this.useJavaContext = useJavaContext;
     }
 
-    public Long getPreparedStatementCacheCurrentSize() {
-        return preparedStatementCacheCurrentSize;
+    public void setUseTryLock(Long useTryLock) {
+        this.useTryLock = useTryLock;
     }
 
-    public Long getPreparedStatementCacheDeleteCount() {
-        return preparedStatementCacheDeleteCount;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public Long getPreparedStatementCacheHitCount() {
-        return preparedStatementCacheHitCount;
+    public void setValidConnectionCheckerClassName(String validConnectionCheckerClassName) {
+        this.validConnectionCheckerClassName = validConnectionCheckerClassName;
     }
 
-    public Long getPreparedStatementCacheMissCount() {
-        return preparedStatementCacheMissCount;
+    public void setValidConnectionCheckerProperties(String validConnectionCheckerProperties) {
+        this.validConnectionCheckerProperties = validConnectionCheckerProperties;
     }
 
-    public Boolean getStatisticsEnabled() {
-        return statisticsEnabled;
+    public void setValidateOnMatch(Boolean validateOnMatch) {
+        this.validateOnMatch = validateOnMatch;
     }
 
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    public void setStatistics(Statistics statistics) {
+        this.statistics = statistics;
     }
 
 }
